@@ -22,11 +22,11 @@ export default {
     babel({
       exclude: 'node_modules/**',
     }),
-    terser(),
+    // terser(), // Comment this out for development
     serve({
       contentBase: './dist',
       host: '0.0.0.0',
-      port: 5000,
+      port: 5001,
       allowCrossOrigin: true,
       headers: {
         'Access-Control-Allow-Origin': '*',

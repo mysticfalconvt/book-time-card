@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { LitElement, html, TemplateResult, css, CSSResultGroup } from 'lit';
-import { HomeAssistant, fireEvent, LovelaceCardEditor } from 'custom-card-helpers';
+import { fireEvent, HomeAssistant, LovelaceCardEditor } from 'custom-card-helpers';
+import { css, CSSResultGroup, html, LitElement, TemplateResult } from 'lit';
 
 import { ScopedRegistryHost } from '@lit-labs/scoped-registry-mixin';
-import { BoilerplateCardConfig } from './types';
 import { customElement, property, state } from 'lit/decorators';
 import { formfieldDefinition } from '../elements/formfield';
 import { selectDefinition } from '../elements/select';
 import { switchDefinition } from '../elements/switch';
 import { textfieldDefinition } from '../elements/textfield';
+import { BoilerplateCardConfig } from './types';
 
 @customElement('boilerplate-card-editor')
 export class BoilerplateCardEditor extends ScopedRegistryHost(LitElement) implements LovelaceCardEditor {
@@ -42,7 +42,7 @@ export class BoilerplateCardEditor extends ScopedRegistryHost(LitElement) implem
   }
 
   get _name(): string {
-    return this._config?.name || '';
+    return this._config?.name || 'Literature Time';
   }
 
   get _entity(): string {
@@ -57,48 +57,18 @@ export class BoilerplateCardEditor extends ScopedRegistryHost(LitElement) implem
     return this._config?.show_error || false;
   }
 
-  protected render(): TemplateResult | void {
-    if (!this.hass || !this._helpers) {
-      return html``;
-    }
-
-    // You can restrict on domain type
-    const entities = Object.keys(this.hass.states);
-
+  protected render(): TemplateResult {
     return html`
-      <mwc-select
-        naturalMenuWidth
-        fixedMenuPosition
-        label="Entity (Required)"
-        .configValue=${'entity'}
-        .value=${this._entity}
-        @selected=${this._valueChanged}
-        @closed=${(ev) => ev.stopPropagation()}
-      >
-        ${entities.map((entity) => {
-          return html`<mwc-list-item .value=${entity}>${entity}</mwc-list-item>`;
-        })}
-      </mwc-select>
-      <mwc-textfield
-        label="Name (Optional)"
-        .value=${this._name}
-        .configValue=${'name'}
-        @input=${this._valueChanged}
-      ></mwc-textfield>
-      <mwc-formfield .label=${`Toggle warning ${this._show_warning ? 'off' : 'on'}`}>
-        <mwc-switch
-          .checked=${this._show_warning !== false}
-          .configValue=${'show_warning'}
-          @change=${this._valueChanged}
-        ></mwc-switch>
-      </mwc-formfield>
-      <mwc-formfield .label=${`Toggle error ${this._show_error ? 'off' : 'on'}`}>
-        <mwc-switch
-          .checked=${this._show_error !== false}
-          .configValue=${'show_error'}
-          @change=${this._valueChanged}
-        ></mwc-switch>
-      </mwc-formfield>
+      <div class="card-config">
+        <h3>Literature Time Card</h3>
+        <div class="description">
+          A beautiful card that displays literary quotes matching the current time. Each quote contains a time reference
+          that matches the current time of day, creating a unique connection between literature and the present moment.
+        </div>
+        <div class="tip">
+          Quotes will automatically update every minute and rotate through available quotes every 20 seconds.
+        </div>
+      </div>
     `;
   }
 
@@ -137,16 +107,28 @@ export class BoilerplateCardEditor extends ScopedRegistryHost(LitElement) implem
   }
 
   static styles: CSSResultGroup = css`
-    mwc-select,
-    mwc-textfield {
+    .card-config {
+      padding: 16px;
+    }
+    h3 {
+      font-size: 1.25rem;
+      font-weight: 500;
+      margin-top: 0;
       margin-bottom: 16px;
-      display: block;
+      color: var(--primary-text-color);
     }
-    mwc-formfield {
-      padding-bottom: 8px;
+    .description {
+      color: var(--secondary-text-color);
+      margin-bottom: 16px;
+      line-height: 1.5;
     }
-    mwc-switch {
-      --mdc-theme-secondary: var(--switch-checked-color);
+    .tip {
+      background: var(--primary-color);
+      color: var(--primary-text-color);
+      padding: 12px;
+      border-radius: 4px;
+      margin-top: 12px;
+      opacity: 0.9;
     }
   `;
 }
