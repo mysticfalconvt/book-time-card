@@ -7,7 +7,7 @@ import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { CARD_VERSION } from './const';
 import quotesData from './data/quotes.json';
 import { localize } from './localize/localize';
-import type { BoilerplateCardConfig } from './types';
+import type { BookTimeCardConfig } from './types';
 
 /* eslint no-console: 0 */
 console.info(
@@ -19,7 +19,7 @@ console.info(
 // This puts your card into the UI card picker dialog
 (window as any).customCards = (window as any).customCards || [];
 (window as any).customCards.push({
-  type: 'boilerplate-card',
+  type: 'book-time-card',
   name: 'Literature Time',
   description: 'A card that shows literary quotes based on the time of day',
 });
@@ -39,11 +39,11 @@ declare global {
 }
 
 // TODO Name your custom element
-@customElement('boilerplate-card')
-export class BoilerplateCard extends LitElement {
+@customElement('book-time-card')
+export class BookTimeCard extends LitElement {
   public static async getConfigElement(): Promise<LovelaceCardEditor> {
     await import('./editor');
-    return document.createElement('boilerplate-card-editor');
+    return document.createElement('book-time-card-editor');
   }
 
   public static getStubConfig(): Record<string, unknown> {
@@ -56,7 +56,7 @@ export class BoilerplateCard extends LitElement {
   // https://lit.dev/docs/components/properties/
   @property({ attribute: false }) public hass!: HomeAssistant;
 
-  @state() private config!: BoilerplateCardConfig;
+  @state() private config!: BookTimeCardConfig;
   @state() private quotes: BookQuote[] = quotesData;
   @state() private currentQuote: BookQuote | null = null;
   @state() private currentTimeQuotes: BookQuote[] = [];
@@ -64,7 +64,7 @@ export class BoilerplateCard extends LitElement {
   private quoteIntervalRef: number | null = null;
 
   // https://lit.dev/docs/components/properties/#accessors-custom
-  public async setConfig(config: BoilerplateCardConfig): Promise<void> {
+  public async setConfig(config: BookTimeCardConfig): Promise<void> {
     console.log('Setting config:', config);
     this.config = config;
     this.updateCurrentTimeQuotes();

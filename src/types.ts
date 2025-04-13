@@ -2,13 +2,13 @@ import { LovelaceCard, LovelaceCardConfig, LovelaceCardEditor } from 'custom-car
 
 declare global {
   interface HTMLElementTagNameMap {
-    'boilerplate-card-editor': LovelaceCardEditor;
+    'book-time-card-editor': LovelaceCardEditor;
     'hui-error-card': LovelaceCard;
   }
 }
 
 // TODO Add your configuration elements here for type-checking
-export interface BoilerplateCardConfig extends LovelaceCardConfig {
+export interface BookTimeCardConfig extends LovelaceCardConfig {
   type: string;
   name?: string;
 }
