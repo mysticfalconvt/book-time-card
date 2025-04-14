@@ -3,9 +3,5 @@
   "render_readme": true,
   "filename": "dist/book-time-card.js",
   "content_in_root": false,
-  "homeassistant": "2023.1.0",
-  "zip_release": true,
-  "hacs": "1.6.0",
-  "hide_default_branch": true,
-  "persistent_directory": "dist"
+  "homeassistant": "2023.1.0"
 }
