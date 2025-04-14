@@ -239,7 +239,6 @@ export class BookTimeCard extends LitElement {
       .quote-container {
         max-width: 800px;
         width: 100%;
-        background: var(--card-background-color);
         border-radius: 12px;
         padding: 24px;
         box-shadow: var(--ha-card-box-shadow, 0 2px 4px rgba(0, 0, 0, 0.1));
