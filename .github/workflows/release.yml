@@ -23,17 +23,19 @@ jobs:
           npm install
           npm run build
 
-      # Copy files to root for HACS
-      - name: Prepare HACS release
+      # Create a directory for HACS release
+      - name: Create HACS release directory
         run: |
-          cp dist/book-time-card.js .
-          cp README.md .
-          cp hacs.json .
+          mkdir -p hacs_release
+          cp dist/book-time-card.js hacs_release/
+          cp README.md hacs_release/
+          cp hacs.json hacs_release/
 
       # Create a zip for HACS
       - name: ZIP the release
         run: |
-          zip book-time-card.zip book-time-card.js README.md hacs.json
+          cd hacs_release
+          zip ../book-time-card.zip *
 
       # Upload zip for HACS
       - name: Upload zip to release
@@ -50,7 +52,7 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: book-time-card.js
+          file: hacs_release/book-time-card.js
           asset_name: book-time-card.js
           tag: ${{ github.ref }}
           overwrite: true
