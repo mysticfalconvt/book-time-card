@@ -23,28 +23,34 @@ jobs:
           npm install
           npm run build
 
-      # Upload build file to the release as an asset
-      - name: Upload js to release
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: dist/book-time-card.js
-          asset_name: book-time-card.js
-          tag: ${{ github.ref }}
-          overwrite: true
+      # Copy files to root for HACS
+      - name: Prepare HACS release
+        run: |
+          cp dist/book-time-card.js .
+          cp README.md .
+          cp hacs.json .
 
       # Create a zip for HACS
       - name: ZIP the release
         run: |
-          cd dist
-          zip book-time-card.zip book-time-card.js
+          zip book-time-card.zip book-time-card.js README.md hacs.json
 
       # Upload zip for HACS
       - name: Upload zip to release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: dist/book-time-card.zip
+          file: book-time-card.zip
           asset_name: book-time-card.zip
+          tag: ${{ github.ref }}
+          overwrite: true
+
+      # Upload js file separately for manual installation
+      - name: Upload js to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: book-time-card.js
+          asset_name: book-time-card.js
           tag: ${{ github.ref }}
           overwrite: true
