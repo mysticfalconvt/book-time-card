@@ -31,30 +31,22 @@ jobs:
         run: |
           # Create a clean directory for HACS release
           rm -rf hacs_release
-          mkdir -p hacs_release/dist
-          mkdir -p hacs_release/src
+          mkdir -p hacs_release
 
-          # Copy source files
-          cp -r src/* hacs_release/src/
-          cp -r dist/* hacs_release/dist/
+          # Copy the main JS file with the correct name
+          cp dist/book-time-card-*.js hacs_release/book-time-card.js
 
-          # Copy configuration files
-          cp package.json hacs_release/
-          cp tsconfig.json hacs_release/
-          cp rollup.config.js hacs_release/
-          cp hacs.json hacs_release/
+          # Copy required files
           cp README.md hacs_release/
-          cp LICENSE hacs_release/
+          cp hacs.json hacs_release/
 
           # Verify the structure
           echo "=== Directory Structure ==="
           ls -la hacs_release/
-          echo "=== Source Directory ==="
-          ls -la hacs_release/src/
-          echo "=== Dist Directory ==="
-          ls -la hacs_release/dist/
           echo "=== hacs.json content ==="
           cat hacs_release/hacs.json
+          echo "=== Main JS file size ==="
+          ls -lh hacs_release/book-time-card.js
 
       # Create a zip for HACS
       - name: ZIP the release
@@ -79,7 +71,7 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ github.token }}
-          file: hacs_release/dist/book-time-card.js
+          file: hacs_release/book-time-card.js
           asset_name: book-time-card.js
           tag: ${{ github.ref }}
           overwrite: true
