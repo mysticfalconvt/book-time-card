@@ -9,22 +9,42 @@ jobs:
     name: Prepare release
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
 
       # Build
-      - name: Build the file
+      - name: Install dependencies and build
         run: |
-          cd /home/runner/work/book-time-card/book-time-card
           npm install
           npm run build
 
-      # Upload build file to the releas as an asset.
-      - name: Upload zip to release
-        uses: svenstaro/upload-release-action@v1-release
-
+      # Upload build file to the release as an asset
+      - name: Upload js to release
+        uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: /home/runner/work/book-time-card/book-time-card/dist/book-time-card.js
+          file: dist/book-time-card.js
           asset_name: book-time-card.js
+          tag: ${{ github.ref }}
+          overwrite: true
+
+      # Create a zip for HACS
+      - name: ZIP the release
+        run: |
+          cd dist
+          zip book-time-card.zip book-time-card.js
+
+      # Upload zip for HACS
+      - name: Upload zip to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: dist/book-time-card.zip
+          asset_name: book-time-card.zip
           tag: ${{ github.ref }}
           overwrite: true
