@@ -26,19 +26,28 @@ jobs:
           npm install
           npm run build
 
-      # Create a directory for HACS release
-      - name: Create HACS release directory
+      # Create HACS release structure
+      - name: Create HACS release structure
         run: |
+          # Create a clean directory for HACS release
+          rm -rf hacs_release
           mkdir -p hacs_release
-          cp dist/book-time-card.js hacs_release/
-          cp README.md hacs_release/
+
+          # Copy required files in the correct order
           cp hacs.json hacs_release/
+          cp README.md hacs_release/
+          cp dist/book-time-card.js hacs_release/
+
+          # Verify the structure
+          ls -la hacs_release/
+          echo "Verifying hacs.json content:"
+          cat hacs_release/hacs.json
 
       # Create a zip for HACS
       - name: ZIP the release
         run: |
           cd hacs_release
-          zip ../book-time-card.zip *
+          zip -r ../book-time-card.zip .
 
       # Upload zip for HACS
       - name: Upload zip to release
