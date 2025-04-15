@@ -33,9 +33,15 @@ jobs:
           rm -rf hacs_release
           mkdir -p hacs_release
 
-          # Copy the main JS file
+          # Copy all necessary files to root of release
           cp dist/book-time-card.js hacs_release/
           cp dist/book-time-card-*.js hacs_release/
+
+          # Ensure the main file exists in root
+          if [ ! -f "hacs_release/book-time-card.js" ]; then
+            echo "Error: Main card file not found"
+            exit 1
+          fi
 
           # Copy required files
           cp README.md hacs_release/

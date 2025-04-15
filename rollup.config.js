@@ -43,6 +43,9 @@ export default [
     output: {
       dir: 'dist',
       format: 'es',
+      preserveModules: false,
+      inlineDynamicImports: true,
+      entryFileNames: 'book-time-card.js'
     },
     plugins: [...plugins],
   },
