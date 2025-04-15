@@ -33,8 +33,9 @@ jobs:
           rm -rf hacs_release
           mkdir -p hacs_release
 
-          # Copy the main JS file with the correct name
-          cp dist/book-time-card-*.js hacs_release/book-time-card.js
+          # Copy the main JS file
+          cp dist/book-time-card.js hacs_release/
+          cp dist/book-time-card-*.js hacs_release/
 
           # Copy required files
           cp README.md hacs_release/
